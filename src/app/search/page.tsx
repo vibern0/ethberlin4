@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../utils/db";
+import Link from "next/link";
 
 interface SearchResult {
   mentor_id: number;
@@ -36,10 +37,6 @@ function SearchRoute() {
     loadSearchResults();
   }, []);
 
-  const handleAskMentor = async (mentor_id: number) => {
-    // TODO: redirect including the mentor_id
-  };
-
   return (
     <ul>
       {searchResults.map((result) => (
@@ -50,9 +47,7 @@ function SearchRoute() {
               {result.topic_title}: {result.topic_description}) (
               {result.connection_status})
             </p>
-            <button onClick={() => handleAskMentor(result.mentor_id)}>
-              Ask mentor
-            </button>
+            <Link href={`/search/apply/${result.mentor_id}`}>Apply</Link>
           </div>
         </li>
       ))}

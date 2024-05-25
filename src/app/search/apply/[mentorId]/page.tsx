@@ -1,5 +1,6 @@
 "use client";
 import { supabase } from "@/app/utils/db";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 interface Question {
@@ -13,8 +14,9 @@ const questions: Question[] = [
   { id: "answer3", label: "Question 3:" },
 ];
 
-function Page({ mentor_id }: { mentor_id: number }) {
+function Page({ params }: { params: { mentorId: string } }) {
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,12 +28,12 @@ function Page({ mentor_id }: { mentor_id: number }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mocked submission logic
-    console.log("Answers:", answers);
     await supabase
       .from("app_user_connections")
       .update({ survey: answers })
-      .eq("to", mentor_id);
+      .eq("to", params.mentorId);
+    //
+    router.push("/search");
   };
 
   return (
