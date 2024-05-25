@@ -11,25 +11,31 @@ export type Database = {
     Tables: {
       app_user: {
         Row: {
+          bio: string | null
           created_at: string
+          events: Json | null
           id: number
           identifier: string
-          keywords: Json
-          social: Json
+          social: Json | null
+          username: string | null
         }
         Insert: {
+          bio?: string | null
           created_at?: string
+          events?: Json | null
           id?: number
           identifier: string
-          keywords: Json
-          social: Json
+          social?: Json | null
+          username?: string | null
         }
         Update: {
+          bio?: string | null
           created_at?: string
+          events?: Json | null
           id?: number
           identifier?: string
-          keywords?: Json
-          social?: Json
+          social?: Json | null
+          username?: string | null
         }
         Relationships: []
       }
