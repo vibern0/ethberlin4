@@ -16,6 +16,7 @@ export type Database = {
           events: Json | null
           id: number
           identifier: string
+          is_mentor: boolean
           social: Json | null
           username: string | null
         }
@@ -25,6 +26,7 @@ export type Database = {
           events?: Json | null
           id?: number
           identifier: string
+          is_mentor?: boolean
           social?: Json | null
           username?: string | null
         }
@@ -34,6 +36,7 @@ export type Database = {
           events?: Json | null
           id?: number
           identifier?: string
+          is_mentor?: boolean
           social?: Json | null
           username?: string | null
         }
@@ -41,18 +44,21 @@ export type Database = {
       }
       app_user_connections: {
         Row: {
+          accepted: boolean | null
           channel: string | null
           from: number
           id: number
           to: number
         }
         Insert: {
+          accepted?: boolean | null
           channel?: string | null
           from: number
           id?: number
           to: number
         }
         Update: {
+          accepted?: boolean | null
           channel?: string | null
           from?: number
           id?: number
@@ -130,6 +136,51 @@ export type Database = {
       }
     }
     Views: {
+      mentor_requests: {
+        Row: {
+          channel: string | null
+          connection_id: number | null
+          mentee_bio: string | null
+          mentee_events: Json | null
+          mentee_id: number | null
+          mentee_identifier: string | null
+          mentee_social: Json | null
+          mentee_username: string | null
+          mentor_id: number | null
+          mentor_identifier: string | null
+          request_status: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_user_connections_from_fkey"
+            columns: ["mentee_id"]
+            isOneToOne: false
+            referencedRelation: "app_user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "app_user_connections_from_fkey"
+            columns: ["mentee_id"]
+            isOneToOne: false
+            referencedRelation: "mentors_by_topic"
+            referencedColumns: ["mentor_id"]
+          },
+          {
+            foreignKeyName: "app_user_connections_to_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "app_user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "app_user_connections_to_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors_by_topic"
+            referencedColumns: ["mentor_id"]
+          },
+        ]
+      }
       mentors_by_topic: {
         Row: {
           bio: string | null
