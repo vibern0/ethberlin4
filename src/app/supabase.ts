@@ -41,19 +41,19 @@ export type Database = {
       }
       app_user_connections: {
         Row: {
-          channel: string
+          channel: string | null
           from: number
           id: number
           to: number
         }
         Insert: {
-          channel: string
+          channel?: string | null
           from: number
           id?: number
           to: number
         }
         Update: {
-          channel?: string
+          channel?: string | null
           from?: number
           id?: number
           to?: number
@@ -67,11 +67,25 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "app_user_connections_from_fkey"
+            columns: ["from"]
+            isOneToOne: false
+            referencedRelation: "mentors_by_topic"
+            referencedColumns: ["mentor_id"]
+          },
+          {
             foreignKeyName: "app_user_connections_to_fkey"
             columns: ["to"]
             isOneToOne: false
             referencedRelation: "app_user"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "app_user_connections_to_fkey"
+            columns: ["to"]
+            isOneToOne: false
+            referencedRelation: "mentors_by_topic"
+            referencedColumns: ["mentor_id"]
           },
         ]
       }
@@ -79,19 +93,22 @@ export type Database = {
         Row: {
           expire_at: string
           id: number
-          topic: string
+          topic_description: string | null
+          topic_title: string
           user_id: number
         }
         Insert: {
           expire_at: string
           id?: number
-          topic: string
+          topic_description?: string | null
+          topic_title: string
           user_id: number
         }
         Update: {
           expire_at?: string
           id?: number
-          topic?: string
+          topic_description?: string | null
+          topic_title?: string
           user_id?: number
         }
         Relationships: [
@@ -102,14 +119,81 @@ export type Database = {
             referencedRelation: "app_user"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "app_user_mentor_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "mentors_by_topic"
+            referencedColumns: ["mentor_id"]
+          },
         ]
       }
     }
     Views: {
-      [_ in never]: never
+      mentors_by_topic: {
+        Row: {
+          bio: string | null
+          connection_channel: string | null
+          connection_from: number | null
+          connection_to: number | null
+          events: Json | null
+          expire_at: string | null
+          mentor_id: number | null
+          mentor_identifier: string | null
+          social: Json | null
+          topic: string | null
+          username: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_user_connections_from_fkey"
+            columns: ["connection_from"]
+            isOneToOne: false
+            referencedRelation: "app_user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "app_user_connections_from_fkey"
+            columns: ["connection_from"]
+            isOneToOne: false
+            referencedRelation: "mentors_by_topic"
+            referencedColumns: ["mentor_id"]
+          },
+          {
+            foreignKeyName: "app_user_connections_to_fkey"
+            columns: ["connection_to"]
+            isOneToOne: false
+            referencedRelation: "app_user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "app_user_connections_to_fkey"
+            columns: ["connection_to"]
+            isOneToOne: false
+            referencedRelation: "mentors_by_topic"
+            referencedColumns: ["mentor_id"]
+          },
+        ]
+      }
     }
     Functions: {
-      [_ in never]: never
+      get_mentors_with_connection_status: {
+        Args: {
+          current_user_identifier: string
+        }
+        Returns: {
+          mentor_id: number
+          mentor_identifier: string
+          social: Json
+          username: string
+          bio: string
+          events: Json
+          topic_title: string
+          topic_description: string
+          expire_at: string
+          connection_status: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import { supabase } from "../utils/db";
 
 const Route: React.FC = () => {
-  const [topic, setTopic] = useState("");
-  const [duration, setDuration] = useState("");
+  const [topicTitle, setTopicTitle] = useState("");
+  const [topicDescription, setTopicDescription] = useState("");
+  const [timeframe, setTimeframe] = useState("");
   const [identifier, setIdentifier] = useState("X"); // TODO: use the actual user identifier
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
@@ -23,7 +24,12 @@ const Route: React.FC = () => {
 
     const { error: errorWrite } = await supabase
       .from("app_user_mentor")
-      .insert({ userId: app_user.id, topic, duration })
+      .insert({
+        user_id: app_user.id,
+        topic_title: topicTitle,
+        topic_description: topicDescription,
+        expire_at: new Date(timeframe),
+      })
       .select();
 
     if (errorWrite) {
@@ -32,8 +38,9 @@ const Route: React.FC = () => {
     }
 
     // TODO: some toast!
-    setTopic("");
-    setDuration("");
+    setTopicTitle("");
+    setTopicDescription("");
+    setTimeframe("");
   };
 
   const handleSubmitUser = async () => {
@@ -55,18 +62,24 @@ const Route: React.FC = () => {
   return (
     <div>
       <section>
-        <h2>Update Topic and Duration</h2>
+        <h2>Update Topic and Timeframe</h2>
         <input
           type="text"
-          placeholder="Enter topic"
-          value={topic}
-          onChange={(e) => setTopic(e.target.value)}
+          placeholder="Enter topic title"
+          value={topicTitle}
+          onChange={(e) => setTopicTitle(e.target.value)}
         />
         <input
           type="text"
-          placeholder="Enter duration"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
+          placeholder="Enter topic description"
+          value={topicDescription}
+          onChange={(e) => setTopicDescription(e.target.value)}
+        />
+        <input
+          type="date"
+          placeholder="Select timeframe"
+          value={timeframe}
+          onChange={(e) => setTimeframe(e.target.value)}
         />
         <button onClick={handleSubmit}>Submit</button>
       </section>
