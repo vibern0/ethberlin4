@@ -1,20 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import { supabase } from "../../utils/db";
+import { useUserContext } from "@/contexts/UserContext";
 
 const Route: React.FC = () => {
+  const { userId } = useUserContext();
   const [topicTitle, setTopicTitle] = useState("");
   const [topicDescription, setTopicDescription] = useState("");
   const [timeframe, setTimeframe] = useState("");
-  const [identifier, setIdentifier] = useState(
-    "938447a0-71cd-43af-9c7b-3abe484285b7"
-  ); // TODO: use the actual user identifier
 
   const handleSubmit = async () => {
     let { data: app_user, error: errorRead } = await supabase
       .from("app_user")
       .select("id")
-      .eq("identifier", identifier)
+      .eq("identifier", userId)
       .single();
 
     if (errorRead || !app_user) {

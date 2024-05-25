@@ -1,11 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { supabase } from "../utils/db";
+import { useUserContext } from "@/contexts/UserContext";
 
 const Route: React.FC = () => {
-  const [identifier, setIdentifier] = useState(
-    "938447a0-71cd-43af-9c7b-3abe484285b7"
-  ); // TODO: use the actual user identifier
+  const { userId } = useUserContext();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
 
@@ -13,7 +12,7 @@ const Route: React.FC = () => {
     const { data, error } = await supabase
       .from("app_user")
       .update({ username, bio })
-      .eq("identifier", identifier)
+      .eq("identifier", userId)
       .select();
 
     if (!data || error) {

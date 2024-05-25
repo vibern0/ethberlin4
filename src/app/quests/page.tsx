@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../utils/db";
 import { Tables } from "../supabase";
+import { useUserContext } from "@/contexts/UserContext";
 
 const ListComponent: React.FC<{}> = () => {
+  const { userId } = useUserContext();
   const [items, setItems] = useState<
     Tables<"accepted_connections_with_quests">[]
   >([]);
@@ -12,7 +14,7 @@ const ListComponent: React.FC<{}> = () => {
       const { data: evaluations, error } = await supabase
         .from("accepted_connections_with_quests")
         .select("*")
-        .eq("mentee_identifier", "f90e806e-bf07-44c9-a6ea-d0f822825d62");
+        .eq("mentee_identifier", userId);
 
       if (!evaluations || evaluations.length === 0 || error) {
         console.error("Error reading evaluations", error);

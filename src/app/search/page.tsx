@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../utils/db";
 import Link from "next/link";
+import { useUserContext } from "@/contexts/UserContext";
 
 interface SearchResult {
   mentor_id: number;
@@ -16,14 +17,14 @@ interface SearchResult {
 }
 
 function SearchRoute() {
+  const { userId } = useUserContext();
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   useEffect(() => {
     const loadSearchResults = async () => {
       const { data: mentors_by_topic, error } = await supabase.rpc(
         "get_mentors_with_connection_status",
         {
-          // TODO: get user identifier from the actual user
-          current_user_identifier: "f90e806e-bf07-44c9-a6ea-d0f822825d62",
+          current_user_identifier: userId,
         }
       );
 
