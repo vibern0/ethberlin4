@@ -26,11 +26,17 @@ const Route: React.FC = () => {
   }, []);
 
   const handleAccept = async (requestId: number) => {
-    //
+    await supabase
+      .from("app_user_connections")
+      .update({ accepted: true })
+      .eq("id", requestId);
   };
 
   const handleDecline = async (requestId: number) => {
-    //
+    await supabase
+      .from("app_user_connections")
+      .update({ accepted: false })
+      .eq("id", requestId);
   };
 
   return (

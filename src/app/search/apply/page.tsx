@@ -1,4 +1,5 @@
 "use client";
+import { supabase } from "@/app/utils/db";
 import React, { useState } from "react";
 
 interface Question {
@@ -12,7 +13,7 @@ const questions: Question[] = [
   { id: "answer3", label: "Question 3:" },
 ];
 
-const Page: React.FC = () => {
+function Page({ mentor_id }: { mentor_id: number }) {
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,10 +24,14 @@ const Page: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Mocked submission logic
     console.log("Answers:", answers);
+    await supabase
+      .from("app_user_connections")
+      .update({ survey: answers })
+      .eq("to", mentor_id);
   };
 
   return (
@@ -49,6 +54,6 @@ const Page: React.FC = () => {
       </form>
     </div>
   );
-};
+}
 
 export default Page;

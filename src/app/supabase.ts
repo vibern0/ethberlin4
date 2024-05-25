@@ -17,6 +17,7 @@ export type Database = {
           id: number
           identifier: string
           is_mentor: boolean
+          mentor_score: number
           social: Json | null
           username: string | null
         }
@@ -27,6 +28,7 @@ export type Database = {
           id?: number
           identifier: string
           is_mentor?: boolean
+          mentor_score?: number
           social?: Json | null
           username?: string | null
         }
@@ -37,6 +39,7 @@ export type Database = {
           id?: number
           identifier?: string
           is_mentor?: boolean
+          mentor_score?: number
           social?: Json | null
           username?: string | null
         }
@@ -48,21 +51,27 @@ export type Database = {
           channel: string | null
           from: number
           id: number
+          survey: Json | null
           to: number
+          updownvote: boolean | null
         }
         Insert: {
           accepted?: boolean | null
           channel?: string | null
           from: number
           id?: number
+          survey?: Json | null
           to: number
+          updownvote?: boolean | null
         }
         Update: {
           accepted?: boolean | null
           channel?: string | null
           from?: number
           id?: number
+          survey?: Json | null
           to?: number
+          updownvote?: boolean | null
         }
         Relationships: [
           {

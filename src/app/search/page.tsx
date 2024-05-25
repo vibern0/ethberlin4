@@ -37,28 +37,7 @@ function SearchRoute() {
   }, []);
 
   const handleAskMentor = async (mentor_id: number) => {
-    const { data: app_user, error: errorRead } = await supabase
-      .from("app_user")
-      .select("id")
-      .eq("identifier", "f90e806e-bf07-44c9-a6ea-d0f822825d62")
-      .single();
-
-    if (errorRead || !app_user) {
-      console.error("Error reading app_user", errorRead);
-      return;
-    }
-
-    const { error: errorWrite } = await supabase
-      .from("app_user_connections")
-      .insert({ from: app_user.id, to: mentor_id })
-      .select();
-
-    if (errorWrite) {
-      console.error("Error writing to DB", errorWrite);
-      return;
-    }
-    console.log("sent!");
-    // TODO: update UI
+    // TODO: redirect including the mentor_id
   };
 
   return (
