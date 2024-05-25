@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../utils/db";
+import Link from "next/link";
 
 interface SearchResult {
   mentor_id: number;
@@ -36,31 +37,6 @@ function SearchRoute() {
     loadSearchResults();
   }, []);
 
-  const handleAskMentor = async (mentor_id: number) => {
-    const { data: app_user, error: errorRead } = await supabase
-      .from("app_user")
-      .select("id")
-      .eq("identifier", "f90e806e-bf07-44c9-a6ea-d0f822825d62")
-      .single();
-
-    if (errorRead || !app_user) {
-      console.error("Error reading app_user", errorRead);
-      return;
-    }
-
-    const { error: errorWrite } = await supabase
-      .from("app_user_connections")
-      .insert({ from: app_user.id, to: mentor_id })
-      .select();
-
-    if (errorWrite) {
-      console.error("Error writing to DB", errorWrite);
-      return;
-    }
-    console.log("sent!");
-    // TODO: update UI
-  };
-
   return (
     <ul>
       {searchResults.map((result) => (
@@ -71,9 +47,7 @@ function SearchRoute() {
               {result.topic_title}: {result.topic_description}) (
               {result.connection_status})
             </p>
-            <button onClick={() => handleAskMentor(result.mentor_id)}>
-              Ask mentor
-            </button>
+            <Link href={`/search/apply/${result.mentor_id}`}>Apply</Link>
           </div>
         </li>
       ))}
