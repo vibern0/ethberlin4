@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
   AppBar,
   IconButton,
@@ -16,7 +16,8 @@ import { identicon } from "@dicebear/collection";
 import { useRouter } from "next/navigation";
 
 export const Header: React.FC = () => {
-  const { userId, loggedIn, setLoggedIn } = useUserContext();
+  const { userId, loggedIn, setLoggedIn, setUserId, setUserEmail, logout } =
+    useUserContext();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -72,7 +73,7 @@ export const Header: React.FC = () => {
               <MenuItem
                 onClick={() => {
                   handleMenuClose();
-                  setLoggedIn(false);
+                  logout();
                 }}
               >
                 Logout

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../utils/db";
 import { useUserContext } from "@/contexts/UserContext";
 import { Box, TextField, Button, Typography } from "@mui/material";
+import Quests from "./Quests";
 
 const Route: React.FC = () => {
   const { userId } = useUserContext();
@@ -23,6 +24,25 @@ const Route: React.FC = () => {
         setBio(data.bio || "");
         setIsReadOnly(!!(data.username || data.bio));
       }
+    };
+
+    fetchUser();
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data, error } = await supabase
+        .from("app_user")
+        .select("username, bio")
+        .eq("identifier", userId);
+
+      if (error) {
+        console.error("Error fetching user", error, userId);
+        return;
+      }
+
+      setUsername(data[0].username);
+      setBio(data[0].bio);
     };
 
     fetchUser();
@@ -125,6 +145,7 @@ const Route: React.FC = () => {
           {isReadOnly ? "Edit" : "Submit"}
         </Button>
       </Box>
+      {username && <Quests />}
     </Box>
   );
 };

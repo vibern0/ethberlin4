@@ -9,7 +9,7 @@ interface Quest {
   mentees: { mentee_id: number; mentee_identifier: string }[]; // Assuming mentees are represented as an array of strings
 }
 
-const Quests: React.FC = () => {
+function Quests() {
   const [quests, setQuests] = useState<Quest[]>([]);
 
   useEffect(() => {
@@ -35,9 +35,8 @@ const Quests: React.FC = () => {
             setQuests(updatedQuests)
           );
         });
-
-      loadQuestsAndMentees();
     };
+    loadQuestsAndMentees();
   }, []);
 
   return (
@@ -61,6 +60,6 @@ const Quests: React.FC = () => {
       ))}
     </div>
   );
-};
+}
 
 export default Quests;

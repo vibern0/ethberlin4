@@ -1,8 +1,17 @@
 import { Box, Button } from "@mui/material";
 import { useLogin } from "../../hooks/useLogin";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export const Landing: React.FC = () => {
-  const { login } = useLogin();
+  const { login, loggedIn } = useLogin();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (loggedIn) {
+      router.push("/profile");
+    }
+  }, [loggedIn, history]);
 
   return (
     <Box
