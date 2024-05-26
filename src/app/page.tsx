@@ -13,7 +13,6 @@ export default function Home() {
       <CssBaseline />
       <SnackbarProvider>
         <UserProvider>
-          <Header />
           <Landing />
         </UserProvider>
       </SnackbarProvider>

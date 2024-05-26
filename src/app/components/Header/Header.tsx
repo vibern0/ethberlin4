@@ -1,9 +1,7 @@
 "use client";
-// components/Header.tsx
 import { useState, useCallback, useMemo } from "react";
 import {
   AppBar,
-  Button,
   IconButton,
   Toolbar,
   Typography,
@@ -130,7 +128,7 @@ export const Header: React.FC = () => {
               onClose={handleMenuClose}
               MenuListProps={{ onMouseLeave: handleMenuClose }}
             >
-                <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+              <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
               <MenuItem
                 onClick={() => {
                   handleMenuClose();
@@ -142,7 +140,7 @@ export const Header: React.FC = () => {
             </Menu>
           </>
         ) : null}
-        </Toolbar>
+      </Toolbar>
     </AppBar>
   );
 };
