@@ -8,7 +8,18 @@ interface Quest {
   id: number;
   name: string;
   description: string;
-  mentees: { mentee_id: number; mentee_identifier: string }[]; // Assuming mentees are represented as an array of strings
+  mentees: {
+    approved: {
+      connection_id: number;
+      mentee_id: number;
+      mentee_identifier: string;
+    }[];
+    pending: {
+      connection_id: number;
+      mentee_id: number;
+      mentee_identifier: string;
+    }[];
+  };
 }
 
 function Quests() {
@@ -22,8 +33,6 @@ function Quests() {
         .select("id")
         .eq("identifier", userId)
         .single();
-
-      console.log();
 
       await supabase
         .from("app_mentor_quest")
@@ -40,7 +49,13 @@ function Quests() {
               .from("mentor_requests")
               .select("*")
               .eq("quest_id", quest.id)
-              .then(({ data: mentees, error }) => ({ ...quest, mentees }))
+              .then(({ data: mentees, error }) => ({
+                ...quest,
+                mentees: {
+                  approved: mentees?.filter((m) => m.request_status === true),
+                  pending: mentees?.filter((m) => m.request_status === null),
+                },
+              }))
           );
 
           Promise.all(fetchMentees).then((updatedQuests) =>
@@ -74,16 +89,48 @@ function Quests() {
                   description: {quest.description}
                 </Typography>
                 <Typography variant="h6">mentees</Typography>
-                <ul>
-                  {quest.mentees.map((mentee) => (
-                    <Link
-                      key={mentee.mentee_id}
-                      href={`/mentees/${mentee.mentee_id}/review`}
-                    >
-                      View Mentee
-                    </Link>
-                  ))}
-                </ul>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#a1c0a1",
+                      borderRadius: "50%",
+                      height: 40,
+                      width: 40,
+                      textAlign: "center",
+                      alignContent: "center",
+                    }}
+                  >
+                    {quest.mentees.pending.map((mentee) => (
+                      <Link
+                        key={mentee.mentee_id}
+                        href={`/mentees/${mentee.connection_id}/review`}
+                      >
+                        {mentee.mentee_id}
+                      </Link>
+                    ))}
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: "#a1c0a1",
+                      borderRadius: "50%",
+                      height: 40,
+                      width: 40,
+                      textAlign: "center",
+                      alignContent: "center",
+                    }}
+                  >
+                    {quest.mentees.approved.map((mentee) => (
+                      <Link
+                        key={mentee.mentee_id}
+                        href={`/mentees/${mentee.connection_id}/review`}
+                      >
+                        {mentee.mentee_id}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </Grid>
