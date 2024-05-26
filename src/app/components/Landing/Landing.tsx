@@ -1,8 +1,15 @@
 import { Box, Button } from "@mui/material";
 import { useLogin } from "../../hooks/useLogin";
+import { useUserContext } from "../../../contexts/UserContext";
 
 export const Landing: React.FC = () => {
+  const { setIsMentor} = useUserContext();
   const { login } = useLogin();
+
+  const handleMentorLogin = () => {
+    login();
+    setIsMentor(true);
+  }
 
   return (
     <Box
@@ -19,7 +26,7 @@ export const Landing: React.FC = () => {
         variant="contained"
         color="success"
         sx={{ fontSize: "1.5rem", py: 4, px: 4, backgroundColor: "#19473f" }}
-        onClick={login}
+        onClick={handleMentorLogin}
       >
         Mentors
       </Button>

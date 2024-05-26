@@ -11,6 +11,8 @@ interface UserContextType {
   loggedIn: boolean;
   setLoggedIn: (loggedIn: boolean) => void;
   logout: () => void;
+  isMentor: boolean;
+  setIsMentor: (isMentor: boolean) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -28,6 +30,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loggedIn, setLoggedIn] = useState<boolean>(
     cookieStore.get("userId") ? true : false
   );
+  const [isMentor, setIsMentor_] = useState<boolean>(
+    cookieStore.get("isMentor") ? true : false
+  );
 
   const setUserId = (userId: string) => {
     setUserId_(userId);
@@ -37,6 +42,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const setUserEmail = (email: string) => {
     setUserEmail_(email);
     cookieStore.set("userEmail", email);
+  };
+
+  const setIsMentor = (isMentor: boolean) => {
+    setIsMentor_(isMentor);
+    cookieStore.set("isMentor", isMentor.toString());
   };
 
   const logout = () => {
@@ -56,6 +66,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         setUserEmail,
         loggedIn,
         setLoggedIn,
+        isMentor,
+        setIsMentor,
         logout,
       }}
     >

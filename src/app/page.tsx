@@ -9,13 +9,12 @@ import { useUserContext } from "@/contexts/UserContext";
 
 export default function Home() {
   const router = useRouter();
-  const cookies = useCookies();
   const [loading, setLoading] = useState(true);
-  const { loggedIn } = useUserContext();
+  const { loggedIn, isMentor} = useUserContext();
 
   useEffect(() => {
     if (loggedIn) {
-      router.push("/search");
+      router.push(isMentor ? "/profile" : "/search");
     } else {
       setLoading(false);
     }

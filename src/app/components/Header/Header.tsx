@@ -18,10 +18,9 @@ import { useUserContext } from "../../../contexts/UserContext";
 import { createAvatar } from "@dicebear/core";
 import { identicon } from "@dicebear/collection";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 export const Header: React.FC = () => {
-  const { userId, loggedIn, logout } = useUserContext();
+  const { userId, loggedIn, logout, isMentor } = useUserContext();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -63,13 +62,15 @@ export const Header: React.FC = () => {
         >
           Pomar
         </Typography>
-        <Button
-          variant="outlined"
-          color="inherit"
-          onClick={()=>router.push("/search")}
-        >
-          Find Quests
-        </Button>
+        {loggedIn && (
+          <Button
+            variant="outlined"
+            color="inherit"
+            onClick={() => router.push(isMentor ? "/quest/new" : "/search")}
+          >
+            {isMentor ? "Create new Quest" : "Find Quests"}
+          </Button>
+        )}
         <Box flexGrow={1} />
         {loggedIn ? (
           <>
