@@ -6,12 +6,13 @@ import { useEffect, useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import { useUserContext } from "@/contexts/UserContext";
 
-export default function Home() {
+export function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const { loggedIn, isMentor} = useUserContext();
 
   useEffect(() => {
+    console.log("test")
     if (loggedIn) {
       router.push(isMentor ? "/profile" : "/search");
     } else {
@@ -38,3 +39,5 @@ export default function Home() {
     </SnackbarProvider>
   );
 }
+
+export default Home;

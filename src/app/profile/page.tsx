@@ -13,7 +13,7 @@ import {
 import Quests from "./Quests";
 
 const Route: React.FC = () => {
-  const { userId } = useUserContext();
+  const { userId, isMentor } = useUserContext();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [social, setSocial] = useState("");
@@ -188,7 +188,7 @@ const Route: React.FC = () => {
             {isReadOnly ? "Edit" : "Submit"}
           </Button>
         </Box>
-        {username && <Quests />}
+        {username && isMentor && <Quests />}
       </Box>
       <Snackbar
         open={snackOpen}

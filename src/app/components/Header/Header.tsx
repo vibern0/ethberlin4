@@ -37,9 +37,12 @@ export const Header: React.FC = () => {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleProfileMenuClick = () => {
+    router.push("/profile");
+  }
+
   const handleMenuClose = () => {
     setAnchorEl(null);
-    router.push("/profile");
   };
 
   const handleLogout = () => {
@@ -95,7 +98,7 @@ export const Header: React.FC = () => {
               onClose={handleMenuClose}
               MenuListProps={{ onMouseLeave: handleMenuClose }}
             >
-              <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+              <MenuItem onClick={handleProfileMenuClick}>Profile</MenuItem>
               <MenuItem
                 onClick={() => {
                   handleMenuClose();
