@@ -1,34 +1,8 @@
 import { Box, Button } from "@mui/material";
-import { supabase } from "../../utils/db";
 import { useLogin } from "../../hooks/useLogin";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useUserContext } from "@/contexts/UserContext";
 
 export const Landing: React.FC = () => {
-  const { login, loggedIn } = useLogin();
-  const { userId } = useUserContext();
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase
-        .from("app_user")
-        .select("username, bio")
-        .eq("identifier", userId)
-        .single();
-
-      if (loggedIn) {
-        if (data && !error) {
-          router.push("/search");
-        } else {
-          router.push("/profile");
-        }
-      }
-    };
-
-    fetchData();
-  }, [loggedIn, router, userId]);
+  const { login } = useLogin();
 
   return (
     <Box
