@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../utils/db";
 import Link from "next/link";
+import { useUserContext } from "@/contexts/UserContext";
 
 interface Quest {
   id: number;
@@ -10,18 +11,30 @@ interface Quest {
 }
 
 function Quests() {
+  const { userId } = useUserContext();
   const [quests, setQuests] = useState<Quest[]>([]);
 
   useEffect(() => {
     const loadQuestsAndMentees = async () => {
+      const { data: user_data } = await supabase
+        .from("app_user")
+        .select("id")
+        .eq("identifier", userId)
+        .single();
+
+      console.log();
+
       await supabase
         .from("app_mentor_quest")
         .select("*")
+        .eq("user_id", user_data?.id)
         .then(({ data: quests, error }) => {
           if (error) {
             console.error("Error fetching quests", error);
             return;
           }
+
+          console.log(quests);
 
           const fetchMentees = quests.map((quest) =>
             supabase
@@ -43,9 +56,13 @@ function Quests() {
     <div>
       <h1>Quests</h1>
       {quests.map((quest) => (
-        <div key={quest.id}>
-          <h2>{quest.name}</h2>
-          <p>{quest.description}</p>
+        <div
+          key={quest.id}
+          style={{ backgroundColor: "gray", margin: 5, padding: 5 }}
+        >
+          <h2>title: {quest.name}</h2>
+          <p>description: {quest.description}</p>
+          <h4>mentees</h4>
           <ul>
             {quest.mentees.map((mentee) => (
               <Link
