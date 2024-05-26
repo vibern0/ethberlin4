@@ -1,12 +1,34 @@
 "use client";
+import { Tables } from "@/app/supabase";
 import { supabase } from "@/app/utils/db";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface PageProps {
   params: { requestId: string };
 }
 
 const Page: React.FC<PageProps> = ({ params }) => {
+  const [request, setRequest] = useState<Tables<"app_user_connections">>();
+
+  useEffect(() => {
+    const fetchRequest = async () => {
+      const { data, error } = await supabase
+        .from("app_user_connections")
+        .select("*")
+        .eq("id", params.requestId)
+        .single();
+
+      if (error) {
+        console.error("Error fetching request", error);
+        return;
+      }
+
+      setRequest(data);
+    };
+
+    fetchRequest();
+  }, []);
+
   const handleApprove = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {
@@ -43,8 +65,14 @@ const Page: React.FC<PageProps> = ({ params }) => {
     <div>
       <h1>Review Request</h1>
       <p>Request ID: {params.requestId}</p>
-      <button onClick={handleApprove}>Approve</button>
-      <button onClick={handleReject}>Reject</button>
+      {request?.accepted === null ? (
+        <>
+          <button onClick={handleApprove}>Approve</button>
+          <button onClick={handleReject}>Reject</button>
+        </>
+      ) : (
+        <p>{request?.accepted ? "Request approved" : "Request rejected"}</p>
+      )}
     </div>
   );
 };

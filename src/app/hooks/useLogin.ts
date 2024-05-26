@@ -1,9 +1,9 @@
 // hooks/useLogin.ts
-import { useCallback } from 'react';
-import { zuAuthPopup } from '@pcd/zuauth';
-import { ZUAUTH_CONFIG } from '../utils/zupassConstants';
-import { useUserContext } from '../../contexts/UserContext';
-import { enqueueSnackbar } from 'notistack';
+import { useCallback } from "react";
+import { zuAuthPopup } from "@pcd/zuauth";
+import { ZUAUTH_CONFIG } from "../utils/zupassConstants";
+import { useUserContext } from "../../contexts/UserContext";
+import { enqueueSnackbar } from "notistack";
 
 // Specify fields to request from Zopass.
 const fieldsToReveal = {
@@ -23,13 +23,13 @@ export function useLogin() {
       watermark: BigInt(12345),
       config: ZUAUTH_CONFIG,
     });
-    if (result.type === 'pcd') {
+    if (result.type === "pcd") {
       const pdc = JSON.parse(result.pcdStr).pcd;
       await sendPCDToServer(pdc);
     } else {
       enqueueSnackbar(
-        'ZuPass authentication failed. Please report to the conference organizer.',
-        { variant: 'error' }
+        "ZuPass authentication failed. Please report to the conference organizer.",
+        { variant: "error" }
       );
     }
   }, []);
@@ -40,27 +40,27 @@ export function useLogin() {
   const sendPCDToServer = async (pcd: any) => {
     let response;
     try {
-      response = await fetch('/api/verify', {
-        method: 'POST',
+      response = await fetch("/api/verify", {
+        method: "POST",
         body: JSON.stringify({
           pcd: pcd,
         }),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
     } catch (e) {
-      enqueueSnackbar(`Error: ${e}`, { variant: 'error' });
+      enqueueSnackbar(`Error: ${e}`, { variant: "error" });
       return;
     }
 
     const data = await response.json();
     if (response.status !== 200) {
-      enqueueSnackbar(`Error: ${data.message}`, { variant: 'error' });
+      enqueueSnackbar(`Error: ${data.message}`, { variant: "error" });
       return;
     }
-    setUserId(pcd);
-    setUserEmail(pcd);
+    setUserId(JSON.parse(pcd).claim.partialTicket.attendeeSemaphoreId);
+    setUserEmail(JSON.parse(pcd).claim.partialTicket.attendeeEmail);
     setLoggedIn(true);
   };
 
