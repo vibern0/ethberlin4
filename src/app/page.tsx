@@ -25,7 +25,7 @@ export default function Home() {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        height="100vh"
+        height="calc(100vh - 64px)"
       >
         <CircularProgress sx={{ color: '#008000' }} />
       </Box>
