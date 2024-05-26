@@ -34,13 +34,11 @@ function Quests() {
             return;
           }
 
-          console.log(quests);
-
           const fetchMentees = quests.map((quest) =>
             supabase
               .from("mentor_requests")
               .select("*")
-              .eq("connection_id", quest.id)
+              .eq("quest_id", quest.id)
               .then(({ data: mentees, error }) => ({ ...quest, mentees }))
           );
 

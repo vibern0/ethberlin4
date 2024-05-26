@@ -36,13 +36,6 @@ export type Database = {
             foreignKeyName: "app_user_mentor_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "accepted_connections_with_quests"
-            referencedColumns: ["mentor_id"]
-          },
-          {
-            foreignKeyName: "app_user_mentor_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
             referencedRelation: "app_user"
             referencedColumns: ["id"]
           },
@@ -95,72 +88,65 @@ export type Database = {
         Row: {
           accepted: boolean | null
           channel: string | null
-          from: number
           id: number
+          mentee_id: number
+          quest_id: number
           survey: Json | null
-          to: number
           updownvote: boolean | null
         }
         Insert: {
           accepted?: boolean | null
           channel?: string | null
-          from: number
           id?: number
+          mentee_id: number
+          quest_id: number
           survey?: Json | null
-          to: number
           updownvote?: boolean | null
         }
         Update: {
           accepted?: boolean | null
           channel?: string | null
-          from?: number
           id?: number
+          mentee_id?: number
+          quest_id?: number
           survey?: Json | null
-          to?: number
           updownvote?: boolean | null
         }
         Relationships: [
           {
             foreignKeyName: "app_user_connections_from_fkey"
-            columns: ["from"]
-            isOneToOne: false
-            referencedRelation: "accepted_connections_with_quests"
-            referencedColumns: ["mentor_id"]
-          },
-          {
-            foreignKeyName: "app_user_connections_from_fkey"
-            columns: ["from"]
+            columns: ["mentee_id"]
             isOneToOne: false
             referencedRelation: "app_user"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "app_user_connections_from_fkey"
-            columns: ["from"]
+            columns: ["mentee_id"]
             isOneToOne: false
             referencedRelation: "mentors_by_topic"
             referencedColumns: ["mentor_id"]
           },
           {
             foreignKeyName: "app_user_connections_to_fkey"
-            columns: ["to"]
+            columns: ["quest_id"]
             isOneToOne: false
             referencedRelation: "accepted_connections_with_quests"
-            referencedColumns: ["mentor_id"]
+            referencedColumns: ["quest_id"]
           },
           {
             foreignKeyName: "app_user_connections_to_fkey"
-            columns: ["to"]
+            columns: ["quest_id"]
             isOneToOne: false
-            referencedRelation: "app_user"
+            referencedRelation: "app_mentor_quest"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "app_user_connections_to_fkey"
-            columns: ["to"]
+            columns: ["quest_id"]
             isOneToOne: false
-            referencedRelation: "mentors_by_topic"
-            referencedColumns: ["mentor_id"]
+            referencedRelation: "mentor_requests"
+            referencedColumns: ["quest_id"]
           },
         ]
       }
@@ -180,7 +166,22 @@ export type Database = {
           quest_title: string | null
           updownvote: boolean | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "app_user_mentor_user_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "app_user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "app_user_mentor_user_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentors_by_topic"
+            referencedColumns: ["mentor_id"]
+          },
+        ]
       }
       mentor_requests: {
         Row: {
@@ -194,6 +195,7 @@ export type Database = {
           mentee_username: string | null
           mentor_id: number | null
           mentor_identifier: string | null
+          quest_id: number | null
           request_status: boolean | null
         }
         Relationships: [
@@ -208,32 +210,18 @@ export type Database = {
             foreignKeyName: "app_user_connections_from_fkey"
             columns: ["mentee_id"]
             isOneToOne: false
-            referencedRelation: "accepted_connections_with_quests"
-            referencedColumns: ["mentor_id"]
-          },
-          {
-            foreignKeyName: "app_user_connections_from_fkey"
-            columns: ["mentee_id"]
-            isOneToOne: false
             referencedRelation: "mentors_by_topic"
             referencedColumns: ["mentor_id"]
           },
           {
-            foreignKeyName: "app_user_connections_to_fkey"
+            foreignKeyName: "app_user_mentor_user_id_fkey"
             columns: ["mentor_id"]
             isOneToOne: false
             referencedRelation: "app_user"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "app_user_connections_to_fkey"
-            columns: ["mentor_id"]
-            isOneToOne: false
-            referencedRelation: "accepted_connections_with_quests"
-            referencedColumns: ["mentor_id"]
-          },
-          {
-            foreignKeyName: "app_user_connections_to_fkey"
+            foreignKeyName: "app_user_mentor_user_id_fkey"
             columns: ["mentor_id"]
             isOneToOne: false
             referencedRelation: "mentors_by_topic"
@@ -267,13 +255,6 @@ export type Database = {
             foreignKeyName: "app_user_connections_from_fkey"
             columns: ["connection_from"]
             isOneToOne: false
-            referencedRelation: "accepted_connections_with_quests"
-            referencedColumns: ["mentor_id"]
-          },
-          {
-            foreignKeyName: "app_user_connections_from_fkey"
-            columns: ["connection_from"]
-            isOneToOne: false
             referencedRelation: "mentors_by_topic"
             referencedColumns: ["mentor_id"]
           },
@@ -281,7 +262,7 @@ export type Database = {
             foreignKeyName: "app_user_connections_to_fkey"
             columns: ["connection_to"]
             isOneToOne: false
-            referencedRelation: "app_user"
+            referencedRelation: "app_mentor_quest"
             referencedColumns: ["id"]
           },
           {
@@ -289,14 +270,14 @@ export type Database = {
             columns: ["connection_to"]
             isOneToOne: false
             referencedRelation: "accepted_connections_with_quests"
-            referencedColumns: ["mentor_id"]
+            referencedColumns: ["quest_id"]
           },
           {
             foreignKeyName: "app_user_connections_to_fkey"
             columns: ["connection_to"]
             isOneToOne: false
-            referencedRelation: "mentors_by_topic"
-            referencedColumns: ["mentor_id"]
+            referencedRelation: "mentor_requests"
+            referencedColumns: ["quest_id"]
           },
         ]
       }
@@ -313,8 +294,8 @@ export type Database = {
           username: string
           bio: string
           events: Json
-          topic_title: string
-          topic_description: string
+          title: string
+          description: string
           expire_at: string
           connection_status: number
         }[]

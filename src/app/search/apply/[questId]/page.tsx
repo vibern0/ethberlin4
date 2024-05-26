@@ -14,7 +14,7 @@ const questions: Question[] = [
   { id: "answer3", label: "Question 3:" },
 ];
 
-function Page({ params }: { params: { mentorId: string } }) {
+function Page({ params }: { params: { questId: string } }) {
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
   const router = useRouter();
 
@@ -31,7 +31,7 @@ function Page({ params }: { params: { mentorId: string } }) {
     await supabase
       .from("app_user_connections")
       .update({ survey: answers })
-      .eq("to", params.mentorId);
+      .eq("quest_id", params.questId);
     //
     router.push("/search");
   };
