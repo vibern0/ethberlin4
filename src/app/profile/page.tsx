@@ -14,15 +14,16 @@ const Route: React.FC = () => {
       const { data, error } = await supabase
         .from("app_user")
         .select("username, bio")
-        .eq("identifier", userId);
+        .eq("identifier", userId)
+        .single();
 
       if (!data || error) {
         console.error("Error fetching user", error);
         return;
       }
 
-      setUsername(data[0].username);
-      setBio(data[0].bio);
+      setUsername(data?.username);
+      setBio(data?.bio);
     };
 
     fetchUser();
