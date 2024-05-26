@@ -10,23 +10,13 @@ import {
   MenuItem,
 } from "@mui/material";
 import ParkIcon from "@mui/icons-material/Park";
-import { zuAuthPopup } from "@pcd/zuauth";
-import { ZUAUTH_CONFIG } from "../../utils/zupassConstants";
 import { useUserContext } from "../../../contexts/UserContext";
-import { enqueueSnackbar } from "notistack";
 import { createAvatar } from "@dicebear/core";
 import { identicon } from "@dicebear/collection";
 import { useRouter } from "next/navigation";
 
-// Specify fields to request from Zopass.
-const fieldsToReveal = {
-  revealAttendeeEmail: true,
-  revealAttendeeSemaphoreId: true,
-};
-
 export const Header: React.FC = () => {
-  const { userId, loggedIn, setLoggedIn, setUserId, setUserEmail } =
-    useUserContext();
+  const { userId, loggedIn, setLoggedIn } = useUserContext();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -47,56 +37,6 @@ export const Header: React.FC = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
     router.push("/profile");
-  };
-
-  /**
-   * Retrieve the PCD (Proof-Carrying Data) using Zopass Zero Knowledge Proof authentication.
-   */
-  const getProof = useCallback(async () => {
-    const result = await zuAuthPopup({
-      fieldsToReveal,
-      watermark: BigInt(12345),
-      config: ZUAUTH_CONFIG,
-    });
-    if (result.type === "pcd") {
-      const pdc = JSON.parse(result.pcdStr).pcd;
-      await sendPCDToServer(pdc);
-    } else {
-      enqueueSnackbar(
-        "ZuPass authentication failed. Please report to the conference organizer.",
-        { variant: "error" }
-      );
-    }
-  }, [loggedIn]);
-
-  /**
-   * Verify the PCD on the backend.
-   */
-  const sendPCDToServer = async (pcd: any) => {
-    let response;
-    try {
-      response = await fetch("/api/verify", {
-        method: "POST",
-        body: JSON.stringify({
-          pcd: pcd,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } catch (e) {
-      enqueueSnackbar(`Error: ${e}`, { variant: "error" });
-      return;
-    }
-
-    const data = await response.json();
-    if (response.status !== 200) {
-      enqueueSnackbar(`Error: ${data.message}`, { variant: "error" });
-      return;
-    }
-    setUserId(JSON.parse(pcd).id);
-    setUserEmail(JSON.parse(pcd).email);
-    setLoggedIn(true);
   };
 
   return (
