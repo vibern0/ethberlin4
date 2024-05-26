@@ -72,7 +72,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
       >
         <h1>Review Request</h1>
         <p>mentee ID: {request?.mentee_id}</p>
-        <p>survey response: {JSON.stringify(request?.survey || {})}</p>
+        <p>Matrix link: {request?.social}</p>
         <p>Request ID: {params.requestId}</p>
         {request?.accepted === null ? (
           <Box>

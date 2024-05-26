@@ -3,6 +3,7 @@ import { supabase } from "@/app/utils/db";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Container, Box, TextField, Button } from "@mui/material";
+import { useUserContext } from "../../../../contexts/UserContext";
 
 interface Question {
   id: string;
@@ -17,6 +18,7 @@ const questions: Question[] = [
 
 function Page({ params }: { params: { questId: string } }) {
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+  const { social } = useUserContext();
   const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +33,7 @@ function Page({ params }: { params: { questId: string } }) {
     e.preventDefault();
     await supabase
       .from("app_user_connections")
-      .update({ survey: answers })
+      .update({ survey: answers, social: social })
       .eq("quest_id", params.questId);
     //
     router.push("/search");
@@ -46,6 +48,19 @@ function Page({ params }: { params: { questId: string } }) {
         justifyContent="center"
       >
         <h1>Questionnaire</h1>
+        <p>
+          Please prepare three questions you'd like to ask the mentor. If the
+          mentor is interested in interacting with you, they will reach out to
+          you via {""}
+          <a
+            href="https://matrix.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Matrix
+          </a>
+          .
+        </p>
         <form onSubmit={handleSubmit}>
           {questions.map((question) => (
             <Box key={question.id} marginBottom={2}>
