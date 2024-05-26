@@ -4,14 +4,15 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export const Landing: React.FC = () => {
-  const { login, loggedIn } = useLogin();
+  const { login: originalLogin, loggedIn } = useLogin();
   const router = useRouter();
 
-  useEffect(() => {
+  const login = async () => {
+    await originalLogin();
     if (loggedIn) {
       router.push("/profile");
     }
-  }, [loggedIn, history]);
+  };
 
   return (
     <Box

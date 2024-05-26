@@ -97,15 +97,10 @@ const Route: React.FC = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Add your username here"
-          InputProps={{
-            readOnly: isReadOnly,
-          }}
+          disabled={isReadOnly}
           sx={{
             "& .MuiOutlinedInput-root": {
               "&.Mui-focused fieldset": {
-                borderColor: "#19473f",
-              },
-              "&:hover:not([readonly]) fieldset": {
                 borderColor: "#19473f",
               },
             },
@@ -117,16 +112,11 @@ const Route: React.FC = () => {
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           placeholder="Add your bio here"
-          InputProps={{
-            readOnly: isReadOnly,
-          }}
+          disabled={isReadOnly}
           sx={{
             "& .MuiOutlinedInput-root": {
               "&.Mui-focused fieldset": {
                 borderColor: "#19473f",
-              },
-              "&:hover fieldset": {
-                borderColor: isReadOnly ? "" : "#19473f",
               },
             },
           }}
