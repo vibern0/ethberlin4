@@ -4,6 +4,7 @@ import { zuAuthPopup } from "@pcd/zuauth";
 import { ZUAUTH_CONFIG } from "../utils/zupassConstants";
 import { useUserContext } from "../../contexts/UserContext";
 import { enqueueSnackbar } from "notistack";
+import { supabase } from "../utils/db";
 
 // Specify fields to request from Zopass.
 const fieldsToReveal = {
@@ -59,6 +60,9 @@ export function useLogin() {
       enqueueSnackbar(`Error: ${data.message}`, { variant: "error" });
       return;
     }
+    await supabase.from("app_user").upsert({
+      identifier: JSON.parse(pcd).claim.partialTicket.attendeeSemaphoreId,
+    });
     setUserId(JSON.parse(pcd).claim.partialTicket.attendeeSemaphoreId);
     setUserEmail(JSON.parse(pcd).claim.partialTicket.attendeeEmail);
     setLoggedIn(true);
