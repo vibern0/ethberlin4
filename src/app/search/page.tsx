@@ -1,4 +1,13 @@
 "use client";
+import {
+  Typography,
+  List,
+  Box,
+  ListItem,
+  ListItemText,
+  Button,
+  Divider,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../utils/db";
 import Link from "next/link";
@@ -39,20 +48,78 @@ function SearchRoute() {
   }, []);
 
   return (
-    <ul>
-      {searchResults.map((result) => (
-        <li key={result.mentor_id}>
-          <div>
-            <p>
-              {result.username || result.mentor_identifier} ({result.bio}) (
-              {result.topic_title}: {result.topic_description}) (
-              {result.connection_status})
-            </p>
-            <Link href={`/search/apply/${result.mentor_id}`}>Apply</Link>
-          </div>
-        </li>
-      ))}
-    </ul>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="top"
+      height="calc(100vh - 64px)"
+    >
+      <List>
+        {searchResults.map((result, index) => (
+          <>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width="40vw" // Set a certain width
+            >
+              <ListItem
+                key={`mentor${result.mentor_id}`}
+                alignItems="flex-start"
+              >
+                <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+                  <ListItemText
+                    primary={
+                      <>
+                        <strong>Mentor:</strong>{" "}
+                        {result.username || result.mentor_identifier}
+                      </>
+                    }
+                    secondary={
+                      <>
+                        <Typography flex={1}>
+                          <strong>Bio:</strong> {result.bio}
+                        </Typography>{" "}
+                        {/* Remove noWrap */}
+                        <Typography noWrap flex={1}>
+                          <strong>Topic:</strong> {result.topic_title}
+                        </Typography>
+                        <Typography flex={1}>
+                          <strong>Description:</strong>{" "}
+                          {result.topic_description}
+                        </Typography>
+                        <Typography flex={1}>
+                          <strong>Connections:</strong>{" "}
+                          {result.connection_status}
+                        </Typography>
+                      </>
+                    }
+                    sx={{ flexGrow: 1, marginRight: 2 }}
+                  />
+                  <Box display="flex" justifyContent="center">
+                    <Link href={`/search/apply/${result.mentor_id}`} passHref>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        sx={{
+                          fontSize: "1rem",
+                          py: 2,
+                          px: 2,
+                          backgroundColor: "#19473f",
+                        }}
+                      >
+                        Apply
+                      </Button>
+                    </Link>
+                  </Box>
+                </Box>
+              </ListItem>
+            </Box>
+            {index < searchResults.length - 1 && <Divider />}{" "}
+          </>
+        ))}
+      </List>
+    </Box>
   );
 }
 
