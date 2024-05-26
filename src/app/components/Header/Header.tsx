@@ -8,12 +8,17 @@ import {
   Avatar,
   Menu,
   MenuItem,
+  Box,
+  Button,
+  Divider,
+  Grid,
 } from "@mui/material";
 import ParkIcon from "@mui/icons-material/Park";
 import { useUserContext } from "../../../contexts/UserContext";
 import { createAvatar } from "@dicebear/core";
 import { identicon } from "@dicebear/collection";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export const Header: React.FC = () => {
   const { userId, loggedIn, logout } = useUserContext();
@@ -41,9 +46,8 @@ export const Header: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    router.push('/');
+    router.push("/");
   };
-
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#19473f" }}>
@@ -51,9 +55,22 @@ export const Header: React.FC = () => {
         <IconButton edge="start" color="inherit" aria-label="home">
           <ParkIcon />
         </IconButton>
-        <Typography variant="h6" style={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          sx={{
+            paddingRight: "1.5rem",
+          }}
+        >
           Pomar
         </Typography>
+        <Button
+          variant="outlined"
+          color="inherit"
+          onClick={()=>router.push("/search")}
+        >
+          Find Quests
+        </Button>
+        <Box flexGrow={1} />
         {loggedIn ? (
           <>
             <IconButton
