@@ -16,8 +16,7 @@ import { identicon } from "@dicebear/collection";
 import { useRouter } from "next/navigation";
 
 export const Header: React.FC = () => {
-  const { userId, loggedIn, setLoggedIn, setUserId, setUserEmail, logout } =
-    useUserContext();
+  const { userId, loggedIn, logout } = useUserContext();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -39,6 +38,12 @@ export const Header: React.FC = () => {
     setAnchorEl(null);
     router.push("/profile");
   };
+
+  const handleLogout = () => {
+    logout();
+    router.push('/');
+  };
+
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#19473f" }}>
@@ -73,7 +78,7 @@ export const Header: React.FC = () => {
               <MenuItem
                 onClick={() => {
                   handleMenuClose();
-                  logout();
+                  handleLogout();
                 }}
               >
                 Logout
