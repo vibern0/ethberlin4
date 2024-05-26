@@ -38,7 +38,7 @@ END
 ELSE 0
 END AS connection_status
 FROM
-app_user_mentor aum
+app_mentor_quest aum
 JOIN
 app_user au ON aum.user_id = au.id
 WHERE
@@ -74,7 +74,7 @@ JOIN
 JOIN
     app_user mentor ON auc.to = mentor.id
 JOIN
-    app_user_mentor aum ON auc.to = aum.user_id
+    app_mentor_quest aum ON auc.to = aum.user_id
 WHERE
     aum.expire_at > NOW();
 

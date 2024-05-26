@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../utils/db";
 import { useUserContext } from "@/contexts/UserContext";
+import Quests from "./Quests";
 
 const Route: React.FC = () => {
   const { userId } = useUserContext();
@@ -61,6 +62,7 @@ const Route: React.FC = () => {
         />
         <button onClick={handleSubmitUser}>Submit</button>
       </section>
+      <Quests />
     </div>
   );
 };

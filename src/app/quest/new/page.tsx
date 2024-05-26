@@ -22,11 +22,11 @@ const Route: React.FC = () => {
     }
 
     const { error: errorWrite } = await supabase
-      .from("app_user_mentor")
+      .from("app_mentor_quest")
       .insert({
         user_id: app_user.id,
-        topic_title: topicTitle,
-        topic_description: topicDescription,
+        title: topicTitle,
+        description: topicDescription,
         expire_at: new Date(timeframe),
       })
       .select();
