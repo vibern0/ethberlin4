@@ -57,9 +57,11 @@ LANGUAGE plpgsql;
 CREATE VIEW mentor_requests AS
 SELECT
     auc.id AS connection_id,
-    auc.from AS mentee_id,
-    auc.to AS mentor_id,
-    auc.channel AS channel,
+    auc.mentee_id,
+    aum.user_id AS mentor_id,
+    aum.id as quest_id,
+    auc.survey as mentee_survey,
+    auc.channel,
     mentee.identifier AS mentee_identifier,
     mentee.username AS mentee_username,
     mentee.social AS mentee_social,
@@ -70,11 +72,11 @@ SELECT
 FROM
     app_user_connections auc
 JOIN
-    app_user mentee ON auc.from = mentee.id
+    app_user mentee ON auc.mentee_id = mentee.id
 JOIN
-    app_user mentor ON auc.to = mentor.id
+    app_mentor_quest aum ON auc.quest_id = aum.id
 JOIN
-    app_mentor_quest aum ON auc.to = aum.user_id
+    app_user mentor ON aum.user_id = mentor.id
 WHERE
     aum.expire_at > NOW();
 

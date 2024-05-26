@@ -141,13 +141,6 @@ export type Database = {
             referencedRelation: "app_mentor_quest"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "app_user_connections_to_fkey"
-            columns: ["quest_id"]
-            isOneToOne: false
-            referencedRelation: "mentor_requests"
-            referencedColumns: ["quest_id"]
-          },
         ]
       }
     }
@@ -192,10 +185,10 @@ export type Database = {
           mentee_id: number | null
           mentee_identifier: string | null
           mentee_social: Json | null
+          mentee_survey: Json | null
           mentee_username: string | null
           mentor_id: number | null
           mentor_identifier: string | null
-          quest_id: number | null
           request_status: boolean | null
         }
         Relationships: [
@@ -270,13 +263,6 @@ export type Database = {
             columns: ["connection_to"]
             isOneToOne: false
             referencedRelation: "accepted_connections_with_quests"
-            referencedColumns: ["quest_id"]
-          },
-          {
-            foreignKeyName: "app_user_connections_to_fkey"
-            columns: ["connection_to"]
-            isOneToOne: false
-            referencedRelation: "mentor_requests"
             referencedColumns: ["quest_id"]
           },
         ]

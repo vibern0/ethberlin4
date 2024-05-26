@@ -10,7 +10,7 @@ import {
   Alert,
   Snackbar,
 } from "@mui/material";
-import Quests from "./Quests";
+import Quests from "./quests";
 
 const Route: React.FC = () => {
   const { userId, isMentor } = useUserContext();

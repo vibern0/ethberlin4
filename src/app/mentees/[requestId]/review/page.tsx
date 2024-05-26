@@ -9,14 +9,14 @@ interface PageProps {
 }
 
 const Page: React.FC<PageProps> = ({ params }) => {
-  const [request, setRequest] = useState<Tables<"app_user_connections">>();
+  const [request, setRequest] = useState<Tables<"mentor_requests">>();
 
   useEffect(() => {
     const fetchRequest = async () => {
       const { data, error } = await supabase
-        .from("app_user_connections")
+        .from("mentor_requests")
         .select("*")
-        .eq("id", params.requestId)
+        .eq("connection_id", params.requestId)
         .single();
 
       if (error) {
@@ -71,10 +71,11 @@ const Page: React.FC<PageProps> = ({ params }) => {
         justifyContent="center"
       >
         <h1>Review Request</h1>
-        <p>mentee ID: {request?.mentee_id}</p>
-        <p>Matrix link: {request?.social}</p>
+        <p>mentee: {request?.mentee_username}</p>
+        <p>(socials): {JSON.stringify(request?.mentee_social || {})}</p>
+        <p>survey response: {JSON.stringify(request?.mentee_survey || {})}</p>
         <p>Request ID: {params.requestId}</p>
-        {request?.accepted === null ? (
+        {request?.request_status === null ? (
           <Box>
             <Button variant="contained" color="primary" onClick={handleApprove}>
               Approve
@@ -88,7 +89,9 @@ const Page: React.FC<PageProps> = ({ params }) => {
             </Button>
           </Box>
         ) : (
-          <p>{request?.accepted ? "Request approved" : "Request rejected"}</p>
+          <p>
+            {request?.request_status ? "Request approved" : "Request rejected"}
+          </p>
         )}
       </Box>
     </Container>
