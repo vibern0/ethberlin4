@@ -7,15 +7,11 @@ import { Landing } from "./components/Landing/Landing";
 import { UserProvider } from "../contexts/UserContext";
 
 export default function Home() {
-
   return (
     <>
       <CssBaseline />
       <SnackbarProvider>
-        <UserProvider>
-          <Header />
-          <Landing />
-        </UserProvider>
+        <Landing />
       </SnackbarProvider>
     </>
   );

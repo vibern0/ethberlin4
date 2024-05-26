@@ -10,6 +10,7 @@ interface UserContextType {
   setUserEmail: (email: string) => void;
   loggedIn: boolean;
   setLoggedIn: (loggedIn: boolean) => void;
+  logout: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -38,6 +39,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     cookieStore.set("userEmail", email);
   };
 
+  const logout = () => {
+    setUserId("");
+    setUserEmail("");
+    setLoggedIn(false);
+    cookieStore.remove("userId");
+    cookieStore.remove("userEmail");
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -47,6 +56,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         setUserEmail,
         loggedIn,
         setLoggedIn,
+        logout,
       }}
     >
       {children}

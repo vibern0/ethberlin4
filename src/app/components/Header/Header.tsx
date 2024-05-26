@@ -27,7 +27,7 @@ const fieldsToReveal = {
 };
 
 export const Header: React.FC = () => {
-  const { userId, loggedIn, setLoggedIn, setUserId, setUserEmail } =
+  const { userId, loggedIn, setLoggedIn, setUserId, setUserEmail, logout } =
     useUserContext();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -130,11 +130,11 @@ export const Header: React.FC = () => {
               onClose={handleMenuClose}
               MenuListProps={{ onMouseLeave: handleMenuClose }}
             >
-                <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+              <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
               <MenuItem
                 onClick={() => {
                   handleMenuClose();
-                  setLoggedIn(false);
+                  logout();
                 }}
               >
                 Logout
@@ -142,7 +142,7 @@ export const Header: React.FC = () => {
             </Menu>
           </>
         ) : null}
-        </Toolbar>
+      </Toolbar>
     </AppBar>
   );
 };
