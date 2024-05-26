@@ -75,7 +75,8 @@ const Route: React.FC = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        height: "calc(100vh - 64px)",
+        flex: "1 0 auto",
+        marginTop: "3em",
         "& .MuiTextField-root": { m: 1, width: "25ch" },
       }}
     >
@@ -137,7 +138,7 @@ const Route: React.FC = () => {
           {isReadOnly ? "Edit" : "Submit"}
         </Button>
       </Box>
-      {username && <Quests />}
+      {username && <Quests/>}
     </Box>
   );
 };

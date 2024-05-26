@@ -2,6 +2,7 @@
 import { supabase } from "@/app/utils/db";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { Container, Box, TextField, Button } from "@mui/material";
 
 interface Question {
   id: string;
@@ -37,24 +38,42 @@ function Page({ params }: { params: { questId: string } }) {
   };
 
   return (
-    <div>
-      <h1>Questionnaire</h1>
-      <form onSubmit={handleSubmit}>
-        {questions.map((question) => (
-          <div key={question.id}>
-            <label htmlFor={question.id}>{question.label}</label>
-            <input
-              type="text"
-              id={question.id}
-              name={question.id}
-              value={answers[question.id] || ""}
-              onChange={handleInputChange}
-            />
-          </div>
-        ))}
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <Container maxWidth="sm">
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <h1>Questionnaire</h1>
+        <form onSubmit={handleSubmit}>
+          {questions.map((question) => (
+            <Box key={question.id} marginBottom={2}>
+              <TextField
+                id={question.id}
+                name={question.id}
+                label={question.label}
+                value={answers[question.id] || ""}
+                onChange={handleInputChange}
+                fullWidth
+              />
+            </Box>
+          ))}
+          <Button
+          variant="contained"
+          color="success"
+          sx={{
+            backgroundColor: "#19473f",
+            color: "#fff",
+            mt: 2,
+            mb: -2,
+          }}
+        >
+            Submit
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 }
 

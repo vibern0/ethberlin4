@@ -2,6 +2,7 @@
 import { Tables } from "@/app/supabase";
 import { supabase } from "@/app/utils/db";
 import React, { useEffect, useState } from "react";
+import { Container, Box, Button } from "@mui/material";
 
 interface PageProps {
   params: { requestId: string };
@@ -62,18 +63,33 @@ const Page: React.FC<PageProps> = ({ params }) => {
   };
 
   return (
-    <div>
-      <h1>Review Request</h1>
-      <p>Request ID: {params.requestId}</p>
-      {request?.accepted === null ? (
-        <>
-          <button onClick={handleApprove}>Approve</button>
-          <button onClick={handleReject}>Reject</button>
-        </>
-      ) : (
-        <p>{request?.accepted ? "Request approved" : "Request rejected"}</p>
-      )}
-    </div>
+    <Container maxWidth="sm">
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <h1>Review Request</h1>
+        <p>Request ID: {params.requestId}</p>
+        {request?.accepted === null ? (
+          <Box>
+            <Button variant="contained" color="primary" onClick={handleApprove}>
+              Approve
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleReject}
+            >
+              Reject
+            </Button>
+          </Box>
+        ) : (
+          <p>{request?.accepted ? "Request approved" : "Request rejected"}</p>
+        )}
+      </Box>
+    </Container>
   );
 };
 
