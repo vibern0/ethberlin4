@@ -35,9 +35,8 @@ function Quests() {
             setQuests(updatedQuests)
           );
         });
-
-      loadQuestsAndMentees();
     };
+    loadQuestsAndMentees();
   }, []);
 
   return (
