@@ -20,11 +20,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <CssBaseline />
-        <UserProvider>
-          <Header />
-          <CookiesProvider>{children}</CookiesProvider>
-        </UserProvider>
+        <CookiesProvider>
+          <CssBaseline />
+          <UserProvider>
+            <Header />
+            {children}
+          </UserProvider>
+        </CookiesProvider>
       </body>
     </html>
   );
