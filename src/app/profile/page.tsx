@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { supabase } from "../utils/db";
 import { useUserContext } from "@/contexts/UserContext";
 
@@ -7,6 +7,25 @@ const Route: React.FC = () => {
   const { userId } = useUserContext();
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data, error } = await supabase
+        .from("app_user")
+        .select("username, bio")
+        .eq("identifier", userId);
+
+      if (!data || error) {
+        console.error("Error fetching user", error);
+        return;
+      }
+
+      setUsername(data[0].username);
+      setBio(data[0].bio);
+    };
+
+    fetchUser();
+  }, [userId]);
 
   const handleSubmitUser = async () => {
     const { data, error } = await supabase
