@@ -7,9 +7,7 @@ export default function Home() {
   return (
     <>
       <SnackbarProvider>
-        <UserProvider>
           <Landing />
-        </UserProvider>
       </SnackbarProvider>
     </>
   );

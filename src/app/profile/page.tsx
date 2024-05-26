@@ -41,8 +41,8 @@ const Route: React.FC = () => {
         return;
       }
 
-      setUsername(data[0].username);
-      setBio(data[0].bio);
+      setUsername(data[0]?.username);
+      setBio(data[0]?.bio);
     };
 
     fetchUser();
