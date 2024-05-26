@@ -5,19 +5,21 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCookies } from "next-client-cookies";
 import { Box, CircularProgress } from "@mui/material";
+import { useUserContext } from "@/contexts/UserContext";
 
 export default function Home() {
   const router = useRouter();
   const cookies = useCookies();
   const [loading, setLoading] = useState(true);
+  const { loggedIn } = useUserContext();
 
   useEffect(() => {
-    if (cookies.get("userId")) {
+    if (loggedIn) {
       router.push("/search");
     } else {
       setLoading(false);
     }
-  }, [cookies, router]);
+  }, [loggedIn]);
 
   if (loading) {
     return (
