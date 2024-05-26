@@ -89,6 +89,7 @@ const Route: React.FC = () => {
           p: 5,
           border: "1px solid #19473f",
           borderRadius: "10px",
+          sx: 2,
         }}
       >
         <Typography variant="h5" gutterBottom>

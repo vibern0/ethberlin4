@@ -10,9 +10,8 @@ import {
   MenuItem,
   Box,
   Button,
-  Divider,
-  Grid,
 } from "@mui/material";
+import Link from "next/link";
 import ParkIcon from "@mui/icons-material/Park";
 import { useUserContext } from "../../../contexts/UserContext";
 import { createAvatar } from "@dicebear/core";
@@ -51,17 +50,22 @@ export const Header: React.FC = () => {
   return (
     <AppBar position="static" sx={{ backgroundColor: "#19473f" }}>
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="home">
-          <ParkIcon />
-        </IconButton>
-        <Typography
-          variant="h6"
-          sx={{
-            paddingRight: "1.5rem",
-          }}
-        >
-          Pomar
-        </Typography>
+        <Link href="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <Box display="flex" alignItems="center">
+            <IconButton edge="start" color="inherit" aria-label="home">
+              <ParkIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              sx={{
+                paddingRight: "1.5rem",
+              }}
+            >
+              Pomar
+            </Typography>
+          </Box>
+        </Link>
+        <Box flexGrow={1} />
         {loggedIn && (
           <Button
             variant="outlined"
@@ -71,12 +75,11 @@ export const Header: React.FC = () => {
             {isMentor ? "Create new Quest" : "Find Quests"}
           </Button>
         )}
-        <Box flexGrow={1} />
         {loggedIn ? (
           <>
             <IconButton
               onMouseEnter={handleMenuOpen}
-              sx={{ background: "#add8e6" }}
+              sx={{ background: "#add8e6", m: 1.5 }}
               size="small"
             >
               <Avatar

@@ -53,13 +53,21 @@ function Quests() {
 
   return (
     <>
-      <Typography variant="h2" align="center">
+      <Typography variant="h2" align="center" sx={{ pt: 2 }}>
         Quests
       </Typography>
-      <Grid container spacing={2} maxWidth="lg" sx={{marginBottom: "20px"}}>
+      <Grid
+        container
+        spacing={2}
+        maxWidth="lg"
+        sx={{ marginBottom: "20px", px: 2 }}
+      >
         {quests.map((quest) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={quest.id}>
-            <Card variant="outlined" style={{ backgroundColor: "white", margin: 5, padding: 5 }}>
+            <Card
+              variant="outlined"
+              style={{ backgroundColor: "white", margin: 5, padding: 5 }}
+            >
               <CardContent>
                 <Typography variant="h5">title: {quest.name}</Typography>
                 <Typography variant="body1">
