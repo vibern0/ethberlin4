@@ -1,3 +1,4 @@
+"use client";
 // components/Header.tsx
 import { useState, useCallback, useMemo } from "react";
 import {
@@ -17,7 +18,7 @@ import { useUserContext } from "../../../contexts/UserContext";
 import { enqueueSnackbar } from "notistack";
 import { createAvatar } from "@dicebear/core";
 import { identicon } from "@dicebear/collection";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Specify fields to request from Zopass.
 const fieldsToReveal = {
@@ -28,6 +29,7 @@ const fieldsToReveal = {
 export const Header: React.FC = () => {
   const { userId, loggedIn, setLoggedIn, setUserId, setUserEmail } =
     useUserContext();
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   /** Generate an avatar based on the user ID. */
@@ -46,6 +48,7 @@ export const Header: React.FC = () => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+    router.push("/profile");
   };
 
   /**
@@ -93,8 +96,8 @@ export const Header: React.FC = () => {
       enqueueSnackbar(`Error: ${data.message}`, { variant: "error" });
       return;
     }
-    setUserId(pcd);
-    setUserEmail(pcd);
+    setUserId(JSON.parse(pcd).id);
+    setUserEmail(JSON.parse(pcd).email);
     setLoggedIn(true);
   };
 
@@ -127,9 +130,7 @@ export const Header: React.FC = () => {
               onClose={handleMenuClose}
               MenuListProps={{ onMouseLeave: handleMenuClose }}
             >
-              <Link href="/profile">
                 <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-              </Link>
               <MenuItem
                 onClick={() => {
                   handleMenuClose();
