@@ -60,15 +60,16 @@ function Page({ params }: { params: { questId: string } }) {
             </Box>
           ))}
           <Button
-          variant="contained"
-          color="success"
-          sx={{
-            backgroundColor: "#19473f",
-            color: "#fff",
-            mt: 2,
-            mb: -2,
-          }}
-        >
+            type="submit"
+            variant="contained"
+            color="success"
+            sx={{
+              backgroundColor: "#19473f",
+              color: "#fff",
+              mt: 2,
+              mb: -2,
+            }}
+          >
             Submit
           </Button>
         </form>
