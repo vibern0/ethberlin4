@@ -23,6 +23,8 @@ const Route: React.FC = () => {
         setUsername(data.username || "");
         setBio(data.bio || "");
         setIsReadOnly(!!(data.username || data.bio));
+      } else {
+        setIsReadOnly(false);
       }
     };
 
@@ -73,7 +75,7 @@ const Route: React.FC = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
+        height: "calc(100vh - 64px)",
         "& .MuiTextField-root": { m: 1, width: "25ch" },
       }}
     >
