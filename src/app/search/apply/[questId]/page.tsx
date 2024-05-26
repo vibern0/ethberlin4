@@ -3,7 +3,6 @@ import { supabase } from "@/app/utils/db";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Container, Box, TextField, Button } from "@mui/material";
-import { useUserContext } from "../../../../contexts/UserContext";
 
 interface Question {
   id: string;
@@ -18,7 +17,6 @@ const questions: Question[] = [
 
 function Page({ params }: { params: { questId: string } }) {
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
-  const { social } = useUserContext();
   const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +31,7 @@ function Page({ params }: { params: { questId: string } }) {
     e.preventDefault();
     await supabase
       .from("app_user_connections")
-      .update({ survey: answers, social: social })
+      .update({ survey: answers })
       .eq("quest_id", params.questId);
     //
     router.push("/search");
