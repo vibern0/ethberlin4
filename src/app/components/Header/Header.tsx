@@ -12,11 +12,12 @@ import {
 } from "@mui/material";
 import ParkIcon from "@mui/icons-material/Park";
 import { zuAuthPopup } from "@pcd/zuauth";
-import { ZUAUTH_CONFIG } from "../utils/zupassConstants";
-import { useUserContext } from "../../contexts/UserContext";
+import { ZUAUTH_CONFIG } from "../../utils/zupassConstants";
+import { useUserContext } from "../../../contexts/UserContext";
 import { enqueueSnackbar } from "notistack";
 import { createAvatar } from "@dicebear/core";
 import { identicon } from "@dicebear/collection";
+import Link from "next/link";
 
 // Specify fields to request from Zopass.
 const fieldsToReveal = {
@@ -108,7 +109,11 @@ export const Header: React.FC = () => {
         </Typography>
         {loggedIn ? (
           <>
-            <IconButton onMouseEnter={handleMenuOpen} sx={{ background: '#add8e6' }} size="small">
+            <IconButton
+              onMouseEnter={handleMenuOpen}
+              sx={{ background: "#add8e6" }}
+              size="small"
+            >
               <Avatar
                 alt="User Avatar"
                 src={`data:image/svg+xml;utf8,${encodeURIComponent(
@@ -122,7 +127,9 @@ export const Header: React.FC = () => {
               onClose={handleMenuClose}
               MenuListProps={{ onMouseLeave: handleMenuClose }}
             >
-              <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+              <Link href="/profile">
+                <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+              </Link>
               <MenuItem
                 onClick={() => {
                   handleMenuClose();
@@ -133,12 +140,8 @@ export const Header: React.FC = () => {
               </MenuItem>
             </Menu>
           </>
-        ) : (
-          <Button color="inherit" onClick={getProof} variant="outlined">
-            Login with ZuPass
-          </Button>
-        )}
-      </Toolbar>
+        ) : null}
+        </Toolbar>
     </AppBar>
   );
 };
