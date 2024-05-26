@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { supabase } from "../utils/db";
+import { supabase } from "@/app/utils/db";
 import Link from "next/link";
 import { useUserContext } from "@/contexts/UserContext";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
@@ -22,7 +22,7 @@ interface Quest {
   };
 }
 
-function Quests() {
+function Mentor() {
   const { userId } = useUserContext();
   const [quests, setQuests] = useState<Quest[]>([]);
 
@@ -140,4 +140,4 @@ function Quests() {
   );
 }
 
-export default Quests;
+export default Mentor;
