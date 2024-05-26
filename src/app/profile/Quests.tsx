@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../utils/db";
 import Link from "next/link";
 import { useUserContext } from "@/contexts/UserContext";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
 
 interface Quest {
   id: number;
@@ -51,29 +52,36 @@ function Quests() {
   }, []);
 
   return (
-    <div>
-      <h1>Quests</h1>
-      {quests.map((quest) => (
-        <div
-          key={quest.id}
-          style={{ backgroundColor: "gray", margin: 5, padding: 5 }}
-        >
-          <h2>title: {quest.name}</h2>
-          <p>description: {quest.description}</p>
-          <h4>mentees</h4>
-          <ul>
-            {quest.mentees.map((mentee) => (
-              <Link
-                key={mentee.mentee_id}
-                href={`/mentees/${mentee.mentee_id}/review`}
-              >
-                View Mentee
-              </Link>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
+    <>
+      <Typography variant="h2" align="center">
+        Quests
+      </Typography>
+      <Grid container spacing={2} maxWidth="lg">
+        {quests.map((quest) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={quest.id}>
+            <Card variant="outlined" style={{ backgroundColor: "white", margin: 5, padding: 5 }}>
+              <CardContent>
+                <Typography variant="h5">title: {quest.name}</Typography>
+                <Typography variant="body1">
+                  description: {quest.description}
+                </Typography>
+                <Typography variant="h6">mentees</Typography>
+                <ul>
+                  {quest.mentees.map((mentee) => (
+                    <Link
+                      key={mentee.mentee_id}
+                      href={`/mentees/${mentee.mentee_id}/review`}
+                    >
+                      View Mentee
+                    </Link>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
 }
 

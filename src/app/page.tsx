@@ -3,7 +3,6 @@ import { SnackbarProvider } from "notistack";
 import { Landing } from "./components/Landing/Landing";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useCookies } from "next-client-cookies";
 import { Box, CircularProgress } from "@mui/material";
 import { useUserContext } from "@/contexts/UserContext";
 

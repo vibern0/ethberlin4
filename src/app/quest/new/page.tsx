@@ -1,16 +1,36 @@
 "use client";
 import React, { useState } from "react";
 import { supabase } from "../../utils/db";
+import { Alert } from "@mui/lab";
 import { useUserContext } from "@/contexts/UserContext";
-import { Button, Container, Grid, TextField, Box } from "@mui/material";
+import {
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Box,
+  Snackbar,
+} from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const Route: React.FC = () => {
   const { userId } = useUserContext();
   const [topicTitle, setTopicTitle] = useState("");
   const [topicDescription, setTopicDescription] = useState("");
   const [timeframe, setTimeframe] = useState("");
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleSubmit = async () => {
+    if (!topicTitle || !topicDescription || !timeframe) {
+      setOpen(true);
+      return;
+    }
+
     let { data: app_user, error: errorRead } = await supabase
       .from("app_user")
       .select("id")
@@ -21,6 +41,8 @@ const Route: React.FC = () => {
       console.error("Error reading app_user", errorRead);
       return;
     }
+
+    router.push("/profile"); // Move to the new page first
 
     const { error: errorWrite } = await supabase
       .from("app_mentor_quest")
@@ -44,7 +66,7 @@ const Route: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" sx={{ height: "calc(100vh - 64px)" }}>
       <Box
         display="flex"
         justifyContent="center"
@@ -99,6 +121,16 @@ const Route: React.FC = () => {
           </Grid>
         </Grid>
       </Box>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="Please fill out all fields"
+      >
+        <Alert onClose={handleClose} severity="error">
+          Please fill out all fields
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
